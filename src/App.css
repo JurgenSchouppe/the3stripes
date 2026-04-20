@@ -427,6 +427,69 @@
   color: #b85d4f;
 }
 
+.welcome-guide {
+  margin-bottom: 4rem;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 1.35rem;
+  background: var(--surface);
+  box-shadow: 0 10px 24px rgba(118, 83, 45, 0.06);
+}
+
+.welcome-guide h2 {
+  margin: 0 0 0.35rem;
+}
+
+.welcome-guide-subtitle {
+  margin: 0 0 0.9rem;
+  color: var(--text-soft);
+}
+
+.welcome-guide-language-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+
+.guide-language-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.guide-language-btn.is-active {
+  background: linear-gradient(120deg, var(--gold), var(--gold-dark));
+  color: #20180f;
+  border-color: var(--gold-dark);
+}
+
+.welcome-guide-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.welcome-guide-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.welcome-guide-card p {
+  margin: 0 0 0.6rem;
+  color: var(--text-soft);
+}
+
+.welcome-guide-card ul {
+  margin: 0 0 1rem;
+  padding-left: 1.1rem;
+  color: var(--text-soft);
+}
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

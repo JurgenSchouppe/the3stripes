@@ -25,6 +25,7 @@ const AIRBNB_URL =
 const BOOKING_URL =
   'https://www.booking.com/hotel/be/deluxe-home-garden-and-pool-optional-pm.nl.html?label=gen173bo-10CAsoFUInZGVsdXhlLWhvbWUtZ2FyZGVuLWFuZC1wb29sLW9wdGlvbmFsLXBtSDNYA2gViAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBmAIGqAIBuALP7YfPBsACAdICJGQ3OWFlMWE1LWFlODEtNGE3YS1hNDkwLTQzMTQ3N2FmNzZlN9gCAeACAQ&sid=6bf9c63780af410d6023465a5c40c489&dist=0&sb_price_type=total&type=total&chal_t=1776667916488&force_referer='
 const WHATSAPP_URL = 'https://wa.me/32470963710'
+const WELCOME_GUIDE_PDF = '/The3Stripes_WelcomeGuide_AllLanguages.pdf'
 
 const amenities = [
   'Premium bedding and designer interiors',
@@ -124,6 +125,87 @@ const experiences = [
 
 const MIN_STAY_NIGHTS = 2
 
+const welcomeGuideLanguages = [
+  {
+    code: 'en',
+    label: 'English',
+    page: 1,
+    title: 'Welcome to The 3 Stripes Executive Suites',
+    intro:
+      'Your home away from home in green Flemish Brabant. Kortenberg sits between Brussels and Leuven with fast transport links and a calm setting.',
+    highlights: [
+      'Kortenberg is known for nature, history, and easy access to Brussels and Leuven.',
+      'The guide includes nearby attractions, bakeries, mobility tips, and emergency contacts.',
+      'Direct bus links to Brussels Airport and connections to metro and train are available.',
+    ],
+  },
+  {
+    code: 'es',
+    label: 'Espanol',
+    page: 8,
+    title: 'Bienvenido a The 3 Stripes Executive Suites',
+    intro:
+      'Su hogar lejos de casa en Kortenberg, perfectamente ubicado entre Bruselas y Lovaina para estancias de ocio o negocios.',
+    highlights: [
+      'Incluye historia local, lugares para visitar y conexiones de transporte.',
+      'Detalles utiles como Wi-Fi, horarios y contactos de emergencia.',
+      'Acceso facil al aeropuerto y al centro de Bruselas.',
+    ],
+  },
+  {
+    code: 'fr',
+    label: 'Francais',
+    page: 15,
+    title: 'Bienvenue a The 3 Stripes Executive Suites',
+    intro:
+      'Votre chez-vous a Kortenberg, entre Bruxelles et Louvain, avec un equilibre ideal entre tranquillite et accessibilite.',
+    highlights: [
+      'Le guide couvre les visites locales, la mobilite et les services pratiques.',
+      'Informations Wi-Fi, horaires d arrivee/depart et numeros d urgence.',
+      'Connexion rapide vers l aeroport et Bruxelles.',
+    ],
+  },
+  {
+    code: 'nl',
+    label: 'Nederlands',
+    page: 22,
+    title: 'Welkom bij The 3 Stripes Executive Suites',
+    intro:
+      'Uw thuis weg van huis in Kortenberg, met een rustige omgeving en snelle verbindingen naar Brussel en Leuven.',
+    highlights: [
+      'De gids bevat lokale tips, bezienswaardigheden en praktische info.',
+      'Wi-Fi, check-in/check-out en noodcontacten staan duidelijk vermeld.',
+      'Ideale ligging voor zowel vakantie als zakelijke verblijven.',
+    ],
+  },
+  {
+    code: 'de',
+    label: 'Deutsch',
+    page: 29,
+    title: 'Willkommen bei The 3 Stripes Executive Suites',
+    intro:
+      'Ihr komfortabler Aufenthalt in Kortenberg mit guter Anbindung an Brussel und Leuven sowie ruhiger Umgebung.',
+    highlights: [
+      'Der Guide enthalt lokale Highlights, Verkehr und Notfallkontakte.',
+      'Praktische Hinweise zu WLAN, Check-in und Hausregeln.',
+      'Schnelle Verbindung zum Flughafen und in die Stadt.',
+    ],
+  },
+  {
+    code: 'it',
+    label: 'Italiano',
+    page: 36,
+    title: 'Benvenuti a The 3 Stripes Executive Suites',
+    intro:
+      'Una casa lontano da casa nel verde di Kortenberg, tra Bruxelles e Lovanio, ideale per business e tempo libero.',
+    highlights: [
+      'Guida completa con luoghi da visitare e informazioni pratiche.',
+      'Dettagli su Wi-Fi, check-in/check-out e numeri di emergenza.',
+      'Collegamenti rapidi con aeroporto e citta vicine.',
+    ],
+  },
+] as const
+
 type AvailabilityPayload = {
   configured: boolean
   source: string
@@ -165,6 +247,7 @@ function App() {
     kind: 'success' | 'error'
     message: string
   } | null>(null)
+  const [activeGuideLanguage, setActiveGuideLanguage] = useState('en')
 
   useEffect(() => {
     let isMounted = true
@@ -217,6 +300,13 @@ function App() {
   const activeSuite = useMemo(
     () => experiences.find((suite) => suite.id === activeSuiteId) ?? null,
     [activeSuiteId],
+  )
+
+  const selectedGuide = useMemo(
+    () =>
+      welcomeGuideLanguages.find((language) => language.code === activeGuideLanguage) ??
+      welcomeGuideLanguages[0],
+    [activeGuideLanguage],
   )
 
   useEffect(() => {
@@ -418,7 +508,10 @@ function App() {
           <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="ghost-link">
             View on Booking.com
           </a>
-          <a href="#enterprise-contact" className="ghost-link oak-link">
+          <a href="#welcome-guide" className="ghost-link oak-link">
+            Welcome Guide
+          </a>
+          <a href="#enterprise-contact" className="ghost-link">
             Business Rental
           </a>
         </div>
@@ -578,6 +671,47 @@ function App() {
             <p className={`enterprise-status ${contactStatus.kind}`}>{contactStatus.message}</p>
           )}
         </form>
+      </section>
+
+      <section id="welcome-guide" className="welcome-guide">
+        <h2>Welcome Guide (All Languages)</h2>
+        <p className="welcome-guide-subtitle">
+          Read the guide directly on this page and open the full PDF from the correct
+          language page when needed.
+        </p>
+
+        <div className="welcome-guide-language-row">
+          {welcomeGuideLanguages.map((language) => (
+            <button
+              key={language.code}
+              type="button"
+              className={`guide-language-btn ${
+                selectedGuide.code === language.code ? 'is-active' : ''
+              }`}
+              onClick={() => setActiveGuideLanguage(language.code)}
+            >
+              {language.label}
+            </button>
+          ))}
+        </div>
+
+        <article className="welcome-guide-card">
+          <h3>{selectedGuide.title}</h3>
+          <p>{selectedGuide.intro}</p>
+          <ul>
+            {selectedGuide.highlights.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+          <a
+            href={`${WELCOME_GUIDE_PDF}#page=${selectedGuide.page}`}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-secondary"
+          >
+            Open full PDF ({selectedGuide.label}) - page {selectedGuide.page}
+          </a>
+        </article>
       </section>
 
       <section className="availability">
