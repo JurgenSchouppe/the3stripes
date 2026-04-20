@@ -348,7 +348,7 @@ function App() {
     message: string
   } | null>(null)
   const [activeGuideLanguage, setActiveGuideLanguage] = useState('en')
-  const [isWelcomeGuideOpen, setIsWelcomeGuideOpen] = useState(true)
+  const [isWelcomeGuideOpen, setIsWelcomeGuideOpen] = useState(false)
 
   const activeSuite = useMemo(
     () => experiences.find((suite) => suite.id === activeSuiteId) ?? null,
@@ -510,7 +510,9 @@ function App() {
   return (
     <main className="page">
       <header className="site-header">
-        <img src={the3stripesLogo} alt="The 3 Stripes Suites logo" className="brand-logo" />
+        <a href="/" aria-label="Go to homepage and reload">
+          <img src={the3stripesLogo} alt="The 3 Stripes Suites logo" className="brand-logo" />
+        </a>
         <div className="header-links">
           <a href={AIRBNB_URL} target="_blank" rel="noreferrer" className="ghost-link">
             View on Airbnb
@@ -833,7 +835,15 @@ function App() {
       </section>
 
       <footer className="footer">
-        <p>Luxury suites in Kortenberg. Oudenaarde opening soon.</p>
+        <p>
+          Email:{' '}
+          <a href="mailto:bookings@the3stipes.be">bookings@the3stipes.be</a>
+        </p>
+        <p>Official office: Witte paterstraat 4, 1040 Brussels</p>
+        <p>VAT: BE0865480718</p>
+        <p>
+          GSM: <a href="tel:+32470963710">+32 470 96 37 10</a>
+        </p>
       </footer>
 
       {activeSuite && (
