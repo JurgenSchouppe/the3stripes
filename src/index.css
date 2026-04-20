@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 
 :root {
-  --bg: #090909;
-  --surface: #121212;
-  --border: #282828;
-  --text: #f8f6f3;
-  --text-soft: #c0bbb2;
-  --gold: #e7c17e;
-  --gold-dark: #bf8f4b;
-  --chip: #1b1814;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --border: #dccbb5;
+  --text: #3d2f22;
+  --text-soft: #7f6a55;
+  --gold: #be915f;
+  --gold-dark: #95663b;
+  --chip: #f2e7d9;
 }
 
 * {
@@ -24,10 +24,7 @@ body,
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(213, 163, 83, 0.14), transparent 25%),
-    radial-gradient(circle at 84% 0%, rgba(168, 129, 72, 0.16), transparent 28%),
-    var(--bg);
+  background: var(--bg);
   font-family: 'Inter', sans-serif;
   color: var(--text);
   line-height: 1.55;

@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# The 3 Stripes Suites Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Luxury marketing website for Kortenberg (live) and Oudenaarde (coming soon), built with React + Vite.
 
-Currently, two official plugins are available:
+## Smoobu calendar sync
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The site includes a live availability section that reads Smoobu availability through iCal.
 
-## React Compiler
+### 1) Add your Smoobu iCal settings
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Copy `.env.example` to `.env`
+2. Set `SMOOBU_PROPERTY_ID` and `SMOOBU_ICAL_TOKEN` (or provide `SMOOBU_ICAL_URL`)
 
-## Expanding the ESLint configuration
+Smoobu iCal format:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+`https://login.smoobu.com/ical/detail/{property_id}.ics?s={room_code}`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 2) Run website + API together
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev:full
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Frontend: `http://localhost:5173`
+- Availability API: `http://localhost:8787/api/availability`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The frontend auto-refreshes availability every 5 minutes.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Enterprise contact form email
+
+The website includes an enterprise/business rental form that sends requests to
+`bookings@the3stripes.be` through SMTP.
+
+Add these variables to your `.env`:
+
+```bash
+CONTACT_TO_EMAIL=bookings@the3stripes.be
+SMTP_HOST=smtp.yourprovider.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-smtp-user
+SMTP_PASS=your-smtp-password
+SMTP_FROM=bookings@the3stripes.be
+```
+
+Without SMTP values, contact form submissions will fail with a configuration message.
+
+## Other scripts
+
+```bash
+npm run dev       # frontend only
+npm run server    # API only
+npm run build     # production build
+npm run preview   # preview build
 ```
