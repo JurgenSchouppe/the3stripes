@@ -103,7 +103,7 @@
 }
 
 .brand-logo {
-  width: clamp(190px, 24vw, 295px);
+  width: clamp(135px, 17vw, 210px);
   height: auto;
   display: block;
 }

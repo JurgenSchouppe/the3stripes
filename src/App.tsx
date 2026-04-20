@@ -645,14 +645,7 @@ function App() {
             className="btn btn-primary btn-action"
             onClick={openBookingSelector}
           >
-            Book on Airbnb
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary btn-action"
-            onClick={openBookingSelector}
-          >
-            Book on Booking.com
+            Book now
           </button>
         </div>
       </section>
