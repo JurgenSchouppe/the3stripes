@@ -509,8 +509,25 @@ function App() {
 
   return (
     <main className="page">
+      <header className="site-header">
+        <img src={the3stripesLogo} alt="The 3 Stripes Suites logo" className="brand-logo" />
+        <div className="header-links">
+          <a href={AIRBNB_URL} target="_blank" rel="noreferrer" className="ghost-link">
+            View on Airbnb
+          </a>
+          <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="ghost-link">
+            View on Booking.com
+          </a>
+          <a href="#welcome-guide" className="ghost-link oak-link">
+            Welcome Guide
+          </a>
+          <a href="#enterprise-contact" className="ghost-link">
+            Business Rental
+          </a>
+        </div>
+      </header>
       <div className="top-banner" role="note" aria-label="Special rental announcement">
-        Kortenberg is also available on custom demand with heated pool, garden, and
+        The appartement in Kortenberg is also available with heated pool, garden, and
         poolhouse access on special request.
       </div>
       <section className="garden-pool-strip" aria-label="Garden and pool thumbnails">
@@ -546,24 +563,6 @@ function App() {
           </button>
         </div>
       </section>
-
-      <header className="site-header">
-        <img src={the3stripesLogo} alt="The 3 Stripes Suites logo" className="brand-logo" />
-        <div className="header-links">
-          <a href={AIRBNB_URL} target="_blank" rel="noreferrer" className="ghost-link">
-            View on Airbnb
-          </a>
-          <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="ghost-link">
-            View on Booking.com
-          </a>
-          <a href="#welcome-guide" className="ghost-link oak-link">
-            Welcome Guide
-          </a>
-          <a href="#enterprise-contact" className="ghost-link">
-            Business Rental
-          </a>
-        </div>
-      </header>
 
       <section className="hero">
         <motion.p
