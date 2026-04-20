@@ -8,9 +8,6 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
 import { motion } from 'framer-motion'
-import { DayPicker } from 'react-day-picker'
-import { formatDistanceToNow } from 'date-fns'
-import 'react-day-picker/dist/style.css'
 import './App.css'
 import the3stripesLogo from './assets/the3stripes-logo.png'
 import kortenberg0181 from './assets/kortenberg-0181.png'
@@ -26,6 +23,7 @@ const BOOKING_URL =
   'https://www.booking.com/hotel/be/deluxe-home-garden-and-pool-optional-pm.nl.html?label=gen173bo-10CAsoFUInZGVsdXhlLWhvbWUtZ2FyZGVuLWFuZC1wb29sLW9wdGlvbmFsLXBtSDNYA2gViAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBmAIGqAIBuALP7YfPBsACAdICJGQ3OWFlMWE1LWFlODEtNGE3YS1hNDkwLTQzMTQ3N2FmNzZlN9gCAeACAQ&sid=6bf9c63780af410d6023465a5c40c489&dist=0&sb_price_type=total&type=total&chal_t=1776667916488&force_referer='
 const WHATSAPP_URL = 'https://wa.me/32470963710'
 const WELCOME_GUIDE_PDF = '/The3Stripes_WelcomeGuide_AllLanguages.pdf'
+const SMOOBU_CALENDAR_IFRAME_URL = import.meta.env.VITE_SMOOBU_CALENDAR_IFRAME_URL ?? ''
 
 const amenities = [
   'Premium bedding and designer interiors',
@@ -123,20 +121,38 @@ const experiences = [
   },
 ] satisfies Suite[]
 
-const MIN_STAY_NIGHTS = 2
-
 const welcomeGuideLanguages = [
   {
     code: 'en',
     label: 'English',
     page: 1,
     title: 'Welcome to The 3 Stripes Executive Suites',
-    intro:
+    overview:
       'Your home away from home in green Flemish Brabant. Kortenberg sits between Brussels and Leuven with fast transport links and a calm setting.',
-    highlights: [
-      'Kortenberg is known for nature, history, and easy access to Brussels and Leuven.',
-      'The guide includes nearby attractions, bakeries, mobility tips, and emergency contacts.',
-      'Direct bus links to Brussels Airport and connections to metro and train are available.',
+    practicalInfo: [
+      'Check-in from 15:00 and check-out by 11:00.',
+      'Wi-Fi network: The3Stripes.',
+      'Wi-Fi password: The3StripesWifi_.',
+      'Quiet hours are between 22:00 and 08:00.',
+    ],
+    transport: [
+      'Direct bus connection to Brussels Airport (Zaventem).',
+      'Bus connection to Kraainem metro station for fast Brussels access.',
+      'Kortenberg train station connects to Brussels and Leuven.',
+      'By car: around 20 km to Brussels center and 15 km to Leuven.',
+    ],
+    nearby: [
+      'Local highlights: Abbey of Kortenberg, Kortenberg Park, Sint-Maartenskerk, and Silsombos.',
+      'Leuven (10-15 km): Town Hall, Grand Beguinage, M Leuven, Stella Artois brewery, Sint-Pieterskerk.',
+      'Brussels (15-25 km): Grand-Place, Atomium, Royal Museums, Comic Strip Center, Cinquantenaire.',
+      'Extra stop: Castle of Leefdaal for a short scenic trip.',
+    ],
+    support: [
+      'Emergency EU number: 112.',
+      'Police urgent: 101.',
+      'On-call doctor: 1733.',
+      'Poison center: 070 245 245.',
+      'Card stop: 078 170 170.',
     ],
   },
   {
@@ -144,12 +160,32 @@ const welcomeGuideLanguages = [
     label: 'Espanol',
     page: 8,
     title: 'Bienvenido a The 3 Stripes Executive Suites',
-    intro:
+    overview:
       'Su hogar lejos de casa en Kortenberg, perfectamente ubicado entre Bruselas y Lovaina para estancias de ocio o negocios.',
-    highlights: [
-      'Incluye historia local, lugares para visitar y conexiones de transporte.',
-      'Detalles utiles como Wi-Fi, horarios y contactos de emergencia.',
-      'Acceso facil al aeropuerto y al centro de Bruselas.',
+    practicalInfo: [
+      'Entrada desde las 15:00 y salida antes de las 11:00.',
+      'Wi-Fi: The3Stripes.',
+      'Contrasena Wi-Fi: The3StripesWifi_.',
+      'Horario de silencio: 22:00-08:00.',
+    ],
+    transport: [
+      'Bus directo al aeropuerto de Bruselas.',
+      'Conexion en bus hacia metro Kraainem.',
+      'Trenes regulares desde estacion de Kortenberg.',
+      'Acceso rapido en coche a Bruselas y Lovaina.',
+    ],
+    nearby: [
+      'Puntos locales: abadias, parque, iglesia y reserva natural.',
+      'Leuven: ayuntamiento, beguinaje, museo M y zona historica.',
+      'Bruselas: Grand-Place, Atomium, museos y centro del comic.',
+      'Castillo de Leefdaal para una salida cercana.',
+    ],
+    support: [
+      'Emergencias UE: 112.',
+      'Policia urgente: 101.',
+      'Medico de guardia: 1733.',
+      'Centro toxicologico: 070 245 245.',
+      'Bloqueo de tarjetas: 078 170 170.',
     ],
   },
   {
@@ -157,12 +193,32 @@ const welcomeGuideLanguages = [
     label: 'Francais',
     page: 15,
     title: 'Bienvenue a The 3 Stripes Executive Suites',
-    intro:
+    overview:
       'Votre chez-vous a Kortenberg, entre Bruxelles et Louvain, avec un equilibre ideal entre tranquillite et accessibilite.',
-    highlights: [
-      'Le guide couvre les visites locales, la mobilite et les services pratiques.',
-      'Informations Wi-Fi, horaires d arrivee/depart et numeros d urgence.',
-      'Connexion rapide vers l aeroport et Bruxelles.',
+    practicalInfo: [
+      'Arrivee a partir de 15:00 et depart avant 11:00.',
+      'Wi-Fi: The3Stripes.',
+      'Mot de passe Wi-Fi: The3StripesWifi_.',
+      'Heures calmes: 22:00-08:00.',
+    ],
+    transport: [
+      'Bus direct vers l aeroport de Bruxelles.',
+      'Connexion bus vers le metro Kraainem.',
+      'Trains reguliers depuis la gare de Kortenberg.',
+      'Bruxelles et Louvain rapidement accessibles en voiture.',
+    ],
+    nearby: [
+      'A voir localement: abbaye, parc, eglise et reserve naturelle.',
+      'Leuven: hotel de ville, beguinage, musee M, quartier historique.',
+      'Bruxelles: Grand-Place, Atomium, musees, centre de la BD.',
+      'Chateau de Leefdaal pour une excursion proche.',
+    ],
+    support: [
+      'Urgence UE: 112.',
+      'Police urgente: 101.',
+      'Medecin de garde: 1733.',
+      'Centre antipoison: 070 245 245.',
+      'Card stop: 078 170 170.',
     ],
   },
   {
@@ -170,12 +226,32 @@ const welcomeGuideLanguages = [
     label: 'Nederlands',
     page: 22,
     title: 'Welkom bij The 3 Stripes Executive Suites',
-    intro:
+    overview:
       'Uw thuis weg van huis in Kortenberg, met een rustige omgeving en snelle verbindingen naar Brussel en Leuven.',
-    highlights: [
-      'De gids bevat lokale tips, bezienswaardigheden en praktische info.',
-      'Wi-Fi, check-in/check-out en noodcontacten staan duidelijk vermeld.',
-      'Ideale ligging voor zowel vakantie als zakelijke verblijven.',
+    practicalInfo: [
+      'Inchecken vanaf 15:00 en uitchecken voor 11:00.',
+      'Wi-Fi netwerk: The3Stripes.',
+      'Wi-Fi wachtwoord: The3StripesWifi_.',
+      'Stilte-uren: 22:00-08:00.',
+    ],
+    transport: [
+      'Rechtstreekse bus naar Brussels Airport.',
+      'Busverbinding naar metrostation Kraainem.',
+      'Treinverbindingen vanuit station Kortenberg.',
+      'Snelle toegang met auto naar Brussel en Leuven.',
+    ],
+    nearby: [
+      'Lokale aanraders: abdij, park, kerk en Silsombos.',
+      'Leuven: stadhuis, begijnhof, M Leuven en historische sites.',
+      'Brussel: Grand-Place, Atomium, musea en stripcentrum.',
+      'Kasteel van Leefdaal als korte uitstap.',
+    ],
+    support: [
+      'EU noodnummer: 112.',
+      'Politie urgent: 101.',
+      'Huisarts van wacht: 1733.',
+      'Antigifcentrum: 070 245 245.',
+      'Card stop: 078 170 170.',
     ],
   },
   {
@@ -183,12 +259,32 @@ const welcomeGuideLanguages = [
     label: 'Deutsch',
     page: 29,
     title: 'Willkommen bei The 3 Stripes Executive Suites',
-    intro:
+    overview:
       'Ihr komfortabler Aufenthalt in Kortenberg mit guter Anbindung an Brussel und Leuven sowie ruhiger Umgebung.',
-    highlights: [
-      'Der Guide enthalt lokale Highlights, Verkehr und Notfallkontakte.',
-      'Praktische Hinweise zu WLAN, Check-in und Hausregeln.',
-      'Schnelle Verbindung zum Flughafen und in die Stadt.',
+    practicalInfo: [
+      'Check-in ab 15:00 und Check-out bis 11:00.',
+      'WLAN: The3Stripes.',
+      'WLAN Passwort: The3StripesWifi_.',
+      'Ruhezeiten: 22:00-08:00.',
+    ],
+    transport: [
+      'Direkter Bus zum Flughafen Brussel.',
+      'Busverbindung zur Metrostation Kraainem.',
+      'Regelmassige Zugverbindungen ab Kortenberg.',
+      'Schnelle Autofahrt nach Brussel und Leuven.',
+    ],
+    nearby: [
+      'Lokal: Abtei, Park, Kirche und Naturgebiet Silsombos.',
+      'Leuven: Rathaus, Beginenhof, Museum M, historische Orte.',
+      'Brussel: Grand-Place, Atomium, Museen und Comiczentrum.',
+      'Schloss Leefdaal als nahe Ausflugsmoglichkeit.',
+    ],
+    support: [
+      'EU Notruf: 112.',
+      'Polizei dringend: 101.',
+      'Bereitschaftsarzt: 1733.',
+      'Giftzentrale: 070 245 245.',
+      'Kartensperre: 078 170 170.',
     ],
   },
   {
@@ -196,28 +292,35 @@ const welcomeGuideLanguages = [
     label: 'Italiano',
     page: 36,
     title: 'Benvenuti a The 3 Stripes Executive Suites',
-    intro:
+    overview:
       'Una casa lontano da casa nel verde di Kortenberg, tra Bruxelles e Lovanio, ideale per business e tempo libero.',
-    highlights: [
-      'Guida completa con luoghi da visitare e informazioni pratiche.',
-      'Dettagli su Wi-Fi, check-in/check-out e numeri di emergenza.',
-      'Collegamenti rapidi con aeroporto e citta vicine.',
+    practicalInfo: [
+      'Check-in dalle 15:00 e check-out entro le 11:00.',
+      'Wi-Fi: The3Stripes.',
+      'Password Wi-Fi: The3StripesWifi_.',
+      'Orario di quiete: 22:00-08:00.',
+    ],
+    transport: [
+      'Bus diretto per aeroporto di Bruxelles.',
+      'Connessione bus verso metro Kraainem.',
+      'Treni regolari dalla stazione di Kortenberg.',
+      'Accesso rapido in auto a Bruxelles e Lovanio.',
+    ],
+    nearby: [
+      'Vicino: abbazia, parco, chiesa e riserva naturale.',
+      'Leuven: municipio, beguinage, museo M, centro storico.',
+      'Bruxelles: Grand-Place, Atomium, musei e fumetti.',
+      'Castello di Leefdaal per una gita breve.',
+    ],
+    support: [
+      'Emergenza UE: 112.',
+      'Polizia urgente: 101.',
+      'Medico di guardia: 1733.',
+      'Centro antiveleni: 070 245 245.',
+      'Blocco carte: 078 170 170.',
     ],
   },
 ] as const
-
-type AvailabilityPayload = {
-  configured: boolean
-  source: string
-  stale: boolean
-  message: string | null
-  lastUpdated: string | null
-  blockedDates: string[]
-  range: {
-    from: string
-    to: string
-  }
-}
 
 type ContactFormData = {
   fullName: string
@@ -228,9 +331,6 @@ type ContactFormData = {
 }
 
 function App() {
-  const [availability, setAvailability] = useState<AvailabilityPayload | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [activeSuiteId, setActiveSuiteId] = useState<string | null>(null)
   const [activePhotoIndex, setActivePhotoIndex] = useState(0)
   const [isBookingSelectorOpen, setIsBookingSelectorOpen] = useState(false)
@@ -248,54 +348,7 @@ function App() {
     message: string
   } | null>(null)
   const [activeGuideLanguage, setActiveGuideLanguage] = useState('en')
-
-  useEffect(() => {
-    let isMounted = true
-
-    const loadAvailability = async () => {
-      try {
-        const response = await fetch('/api/availability', {
-          headers: { Accept: 'application/json' },
-        })
-
-        if (!response.ok) {
-          throw new Error('Could not load availability right now.')
-        }
-
-        const payload = (await response.json()) as AvailabilityPayload
-        if (!isMounted) {
-          return
-        }
-
-        setAvailability(payload)
-        setErrorMessage(null)
-      } catch (error) {
-        if (!isMounted) {
-          return
-        }
-        const fallbackMessage =
-          error instanceof Error ? error.message : 'Could not load availability.'
-        setErrorMessage(fallbackMessage)
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    void loadAvailability()
-    const refreshId = window.setInterval(loadAvailability, 5 * 60 * 1000)
-
-    return () => {
-      isMounted = false
-      window.clearInterval(refreshId)
-    }
-  }, [])
-
-  const blockedDays = useMemo(
-    () => (availability?.blockedDates ?? []).map((day) => new Date(`${day}T00:00:00`)),
-    [availability],
-  )
+  const [isWelcomeGuideOpen, setIsWelcomeGuideOpen] = useState(true)
 
   const activeSuite = useMemo(
     () => experiences.find((suite) => suite.id === activeSuiteId) ?? null,
@@ -453,11 +506,6 @@ function App() {
       (currentIndex) => (currentIndex - 1 + activeSuite.photos.length) % activeSuite.photos.length,
     )
   }
-
-  const lastUpdatedLabel =
-    availability?.lastUpdated != null
-      ? formatDistanceToNow(new Date(availability.lastUpdated), { addSuffix: true })
-      : null
 
   return (
     <main className="page">
@@ -674,97 +722,98 @@ function App() {
       </section>
 
       <section id="welcome-guide" className="welcome-guide">
-        <h2>Welcome Guide (All Languages)</h2>
+        <div className="welcome-guide-header">
+          <h2>Welcome Guide (All Languages)</h2>
+          <button
+            type="button"
+            className="guide-toggle-btn"
+            onClick={() => setIsWelcomeGuideOpen((current) => !current)}
+          >
+            {isWelcomeGuideOpen ? 'Hide guide' : 'Show guide'}
+          </button>
+        </div>
         <p className="welcome-guide-subtitle">
           Read the guide directly on this page and open the full PDF from the correct
           language page when needed.
         </p>
 
-        <div className="welcome-guide-language-row">
-          {welcomeGuideLanguages.map((language) => (
-            <button
-              key={language.code}
-              type="button"
-              className={`guide-language-btn ${
-                selectedGuide.code === language.code ? 'is-active' : ''
-              }`}
-              onClick={() => setActiveGuideLanguage(language.code)}
-            >
-              {language.label}
-            </button>
-          ))}
-        </div>
+        {isWelcomeGuideOpen && (
+          <>
+            <div className="welcome-guide-language-row">
+              {welcomeGuideLanguages.map((language) => (
+                <button
+                  key={language.code}
+                  type="button"
+                  className={`guide-language-btn ${
+                    selectedGuide.code === language.code ? 'is-active' : ''
+                  }`}
+                  onClick={() => setActiveGuideLanguage(language.code)}
+                >
+                  {language.label}
+                </button>
+              ))}
+            </div>
 
-        <article className="welcome-guide-card">
-          <h3>{selectedGuide.title}</h3>
-          <p>{selectedGuide.intro}</p>
-          <ul>
-            {selectedGuide.highlights.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
-          <a
-            href={`${WELCOME_GUIDE_PDF}#page=${selectedGuide.page}`}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-secondary"
-          >
-            Open full PDF ({selectedGuide.label}) - page {selectedGuide.page}
-          </a>
-        </article>
+            <article className="welcome-guide-card">
+              <h3>{selectedGuide.title}</h3>
+              <p>{selectedGuide.overview}</p>
+
+              <h4>Practical stay information</h4>
+              <ul>
+                {selectedGuide.practicalInfo.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+
+              <h4>Transport and connectivity</h4>
+              <ul>
+                {selectedGuide.transport.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+
+              <h4>Nearby places and city trips</h4>
+              <ul>
+                {selectedGuide.nearby.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+
+              <h4>Emergency and support contacts</h4>
+              <ul>
+                {selectedGuide.support.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+
+              <a
+                href={`${WELCOME_GUIDE_PDF}#page=${selectedGuide.page}`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-secondary"
+              >
+                Open full PDF ({selectedGuide.label}) - page {selectedGuide.page}
+              </a>
+            </article>
+          </>
+        )}
       </section>
 
-      <section className="availability">
-        <div className="availability-copy">
-          <h2>Live availability calendar</h2>
-          <p>
-            This calendar syncs from Smoobu via iCal and refreshes automatically every
-            5 minutes to keep your website aligned with booking availability.
-          </p>
-          {availability?.configured === false && (
-            <p className="availability-note">
-              Add Smoobu calendar settings in <code>.env</code> (
-              <code>SMOOBU_ICAL_URL</code> or <code>SMOOBU_ICAL_TOKEN</code>) to enable this
-              live sync.
-            </p>
-          )}
-          {errorMessage && <p className="availability-error">{errorMessage}</p>}
-          {availability?.stale && (
-            <p className="availability-note">
-              Showing cached data while Smoobu sync catches up.
-            </p>
-          )}
-          {lastUpdatedLabel && (
-            <p className="availability-meta">Last synced {lastUpdatedLabel}.</p>
-          )}
+      <section className="smoobu-calendar">
+        <h2>Live availability calendar</h2>
+        {SMOOBU_CALENDAR_IFRAME_URL ? (
+          <iframe
+            src={SMOOBU_CALENDAR_IFRAME_URL}
+            title="Smoobu availability calendar"
+            className="smoobu-calendar-frame"
+            loading="lazy"
+          />
+        ) : (
           <p className="availability-note">
-            Minimum stay: {MIN_STAY_NIGHTS} nights (final rules remain managed on Airbnb).
+            Add <code>VITE_SMOOBU_CALENDAR_IFRAME_URL</code> to <code>.env</code> and
+            restart <code>npm run dev:full</code> to show the Smoobu iframe calendar.
           </p>
-          <div className="availability-legend" aria-label="Calendar legend">
-            <span>
-              <i className="legend-dot legend-available" /> Available
-            </span>
-            <span>
-              <i className="legend-dot legend-blocked" /> Blocked
-            </span>
-          </div>
-        </div>
-        <div className="calendar-wrap">
-          {isLoading ? (
-            <p className="availability-meta">Loading calendar...</p>
-          ) : (
-            <DayPicker
-              mode="single"
-              numberOfMonths={2}
-              disabled={blockedDays}
-              captionLayout="dropdown"
-              fromYear={new Date().getFullYear()}
-              toYear={new Date().getFullYear() + 2}
-              pagedNavigation
-              className="availability-calendar"
-            />
-          )}
-        </div>
+        )}
       </section>
 
       <section className="cta">

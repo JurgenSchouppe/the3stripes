@@ -2,18 +2,16 @@
 
 Luxury marketing website for Kortenberg (live) and Oudenaarde (coming soon), built with React + Vite.
 
-## Smoobu calendar sync
+## Smoobu calendar iframe
 
-The site includes a live availability section that reads Smoobu availability through iCal.
+The site includes a live availability section that embeds Smoobu's calendar iframe directly.
 
-### 1) Add your Smoobu iCal settings
+### 1) Add your Smoobu iframe URL
 
 1. Copy `.env.example` to `.env`
-2. Set `SMOOBU_PROPERTY_ID` and `SMOOBU_ICAL_TOKEN` (or provide `SMOOBU_ICAL_URL`)
+2. Set `VITE_SMOOBU_CALENDAR_IFRAME_URL` with the iframe URL from Smoobu dashboard.
 
-Smoobu iCal format:
-
-`https://login.smoobu.com/ical/detail/{property_id}.ics?s={room_code}`
+You can find this in Smoobu under Website Calendar / Calendar iFrame setup.
 
 ### 2) Run website + API together
 
@@ -23,9 +21,9 @@ npm run dev:full
 ```
 
 - Frontend: `http://localhost:5173`
-- Availability API: `http://localhost:8787/api/availability`
+- Availability API (optional legacy endpoint): `http://localhost:8787/api/availability`
 
-The frontend auto-refreshes availability every 5 minutes.
+When the iframe URL is set, the website displays Smoobu's live calendar directly.
 
 ## Enterprise contact form email
 
